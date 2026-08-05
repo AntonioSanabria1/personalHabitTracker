@@ -7,7 +7,7 @@ import { StoreInitializer } from '@/components/StoreInitializer';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Premium Habit Tracker',
+  title: 'Habit Tracker',
   description: 'Track your habits with a premium aesthetic.',
 };
 
