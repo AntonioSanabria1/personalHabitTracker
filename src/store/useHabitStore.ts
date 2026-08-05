@@ -6,6 +6,8 @@ interface HabitStore {
   habits: Habit[];
   logs: HabitLog[];
   userId: string | null;
+  userEmail: string | null;
+  userAvatar: string | null;
   isLoading: boolean;
   
   initStore: (userId: string) => Promise<void>;
@@ -27,13 +29,19 @@ export const useHabitStore = create<HabitStore>((set, get) => ({
   habits: [],
   logs: [],
   userId: null,
+  userEmail: null,
+  userAvatar: null,
   isLoading: true,
 
   initStore: async (userId: string) => {
     if (initPromise) return initPromise;
     
     initPromise = (async () => {
-      set({ userId, isLoading: true });
+      const { data: { user } } = await supabase.auth.getUser();
+      const userEmail = user?.email || null;
+      const userAvatar = user?.user_metadata?.avatar_url || null;
+      
+      set({ userId, userEmail, userAvatar, isLoading: true });
     
     try {
       const [habitsResponse, logsResponse] = await Promise.all([
@@ -81,7 +89,7 @@ export const useHabitStore = create<HabitStore>((set, get) => ({
   },
 
   resetStore: () => {
-    set({ habits: [], logs: [], userId: null, isLoading: true });
+    set({ habits: [], logs: [], userId: null, userEmail: null, userAvatar: null, isLoading: true });
   },
 
   addHabit: async (name, category, color) => {

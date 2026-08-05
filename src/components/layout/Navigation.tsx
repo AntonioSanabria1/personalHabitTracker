@@ -11,7 +11,11 @@ import { useHabitStore } from '@/store/useHabitStore';
 export function Navigation() {
   const pathname = usePathname();
   const router = useRouter();
-  const resetStore = useHabitStore(state => state.resetStore);
+  const { resetStore, userEmail, userAvatar } = useHabitStore(state => ({
+    resetStore: state.resetStore,
+    userEmail: state.userEmail,
+    userAvatar: state.userAvatar
+  }));
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
   // No renderizar navegación en la página de login
@@ -92,7 +96,22 @@ export function Navigation() {
           })}
         </nav>
         
-        <div className="mt-auto">
+        <div className="mt-auto flex flex-col gap-2">
+          {userEmail && (
+            <div className="flex items-center gap-3 px-3 py-3 mb-2 bg-zinc-900/50 rounded-xl border border-zinc-800/50">
+              {userAvatar ? (
+                <img src={userAvatar} alt="Avatar" className="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-700" />
+              ) : (
+                <div className="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-500 flex items-center justify-center font-bold text-sm border border-emerald-500/20">
+                  {userEmail.charAt(0).toUpperCase()}
+                </div>
+              )}
+              <div className="flex flex-col overflow-hidden">
+                <span className="text-xs font-medium text-zinc-300 truncate">{userEmail}</span>
+                <span className="text-[10px] text-zinc-500 font-medium">Cuenta Conectada</span>
+              </div>
+            </div>
+          )}
           <button
             onClick={() => setShowLogoutConfirm(true)}
             className="w-full group flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all text-zinc-400 hover:text-rose-400 hover:bg-rose-500/10"
