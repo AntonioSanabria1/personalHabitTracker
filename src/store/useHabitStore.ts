@@ -21,6 +21,8 @@ interface HabitStore {
   reorderHabits: (activeId: string, overId: string) => void;
 }
 
+let initPromise: Promise<void> | null = null;
+
 export const useHabitStore = create<HabitStore>((set, get) => ({
   habits: [],
   logs: [],
@@ -28,7 +30,10 @@ export const useHabitStore = create<HabitStore>((set, get) => ({
   isLoading: true,
 
   initStore: async (userId: string) => {
-    set({ userId, isLoading: true });
+    if (initPromise) return initPromise;
+    
+    initPromise = (async () => {
+      set({ userId, isLoading: true });
     
     try {
       const [habitsResponse, logsResponse] = await Promise.all([
@@ -68,7 +73,11 @@ export const useHabitStore = create<HabitStore>((set, get) => ({
     } catch (error) {
       console.error('Error loading data:', error);
       set({ isLoading: false });
+    } finally {
+      initPromise = null;
     }
+    })();
+    return initPromise;
   },
 
   resetStore: () => {

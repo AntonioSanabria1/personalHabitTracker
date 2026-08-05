@@ -22,8 +22,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       } else if (session && pathname === '/login') {
         router.replace('/');
       } else if (session) {
-        // Initialize store with user data
-        initStore(session.user.id);
+        // Initialize store with user data only if not already initialized
+        if (useHabitStore.getState().userId !== session.user.id) {
+          initStore(session.user.id);
+        }
       }
       
       if (mounted) setLoading(false);
@@ -33,7 +35,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'SIGNED_IN' && session) {
-        initStore(session.user.id);
+        if (useHabitStore.getState().userId !== session.user.id) {
+          initStore(session.user.id);
+        }
         if (pathname === '/login') router.replace('/');
       } else if (event === 'SIGNED_OUT') {
         router.replace('/login');

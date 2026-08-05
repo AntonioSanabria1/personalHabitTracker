@@ -50,9 +50,13 @@ function DashboardContent({ serverDate }: { serverDate?: string }) {
         const date = subDays(baseDate, 29 - i);
         const dateStr = date.toISOString().split('T')[0];
         
+        const relevantHabits = selectedHabitId ? activeHabits.filter(h => h.id === selectedHabitId) : activeHabits;
+        const totalCount = relevantHabits.length || 1;
+        const completedCount = logs.filter(l => l.date === dateStr && l.completed && relevantHabits.some(h => h.id === l.habit_id)).length;
+        
         return {
           name: format(date, 'd MMM', { locale: es }),
-          completados: logs.filter(l => l.date === dateStr && l.completed && (selectedHabitId ? l.habit_id === selectedHabitId : true)).length
+          completados: Math.round((completedCount / totalCount) * 100)
         };
       });
     } else if (timeRange === 'year') {
