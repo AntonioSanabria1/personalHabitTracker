@@ -23,6 +23,9 @@ export function Navigation() {
   ];
 
   const handleLogout = async () => {
+    const isConfirmed = window.confirm('¿Estás seguro de que quieres cerrar sesión?');
+    if (!isConfirmed) return;
+    
     await supabase.auth.signOut();
     resetStore();
     router.push('/login');
