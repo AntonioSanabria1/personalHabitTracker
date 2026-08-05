@@ -94,28 +94,24 @@ export function Navigation() {
           })}
         </nav>
         
-        <div className="mt-auto flex flex-col gap-2">
-          {userEmail && (
-            <div className="flex items-center gap-3 px-3 py-3 mb-2 bg-zinc-900/50 rounded-xl border border-zinc-800/50">
-              {userAvatar ? (
-                <img src={userAvatar} alt="Avatar" className="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-700" />
-              ) : (
-                <div className="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-500 flex items-center justify-center font-bold text-sm border border-emerald-500/20">
-                  {userEmail ? userEmail.charAt(0).toUpperCase() : 'U'}
-                </div>
-              )}
-              <div className="flex flex-col overflow-hidden">
-                <span className="text-xs font-medium text-zinc-300 truncate">{userEmail}</span>
-                <span className="text-[10px] text-zinc-500 font-medium">Cuenta Conectada</span>
-              </div>
-            </div>
-          )}
+        <div className="mt-auto">
           <button
             onClick={() => setShowLogoutConfirm(true)}
-            className="w-full group flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all text-zinc-400 hover:text-rose-400 hover:bg-rose-500/10"
+            className="w-full group flex items-center justify-between rounded-xl px-4 py-3 text-sm font-medium transition-all text-zinc-400 hover:text-rose-400 hover:bg-rose-500/10"
           >
-            <LogOut className="h-4 w-4 transition-colors text-zinc-500 group-hover:text-rose-400" strokeWidth={1.5} />
-            Cerrar Sesión
+            <div className="flex items-center gap-3">
+              <LogOut className="h-4 w-4 transition-colors text-zinc-500 group-hover:text-rose-400" strokeWidth={1.5} />
+              Cerrar Sesión
+            </div>
+            {userEmail && (
+              userAvatar ? (
+                <img src={userAvatar} alt="Avatar" className="w-6 h-6 rounded-full bg-zinc-800 border border-zinc-700 opacity-80 group-hover:opacity-40 transition-opacity" />
+              ) : (
+                <div className="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-500 flex items-center justify-center font-bold text-[10px] border border-emerald-500/20 opacity-80 group-hover:opacity-40 transition-opacity">
+                  {userEmail ? userEmail.charAt(0).toUpperCase() : 'U'}
+                </div>
+              )
+            )}
           </button>
         </div>
       </div>
