@@ -10,8 +10,8 @@ export const metadata: Metadata = {
   title: 'Habit Tracker',
   description: 'Track your habits with a premium aesthetic.',
   icons: {
-    icon: '/logo.png',
-    apple: '/logo.png',
+    icon: '/logo.png?v=2',
+    apple: '/logo.png?v=2',
   }
 };
 
