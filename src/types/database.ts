@@ -36,6 +36,7 @@ export interface Habit {
   created_at: string;
   is_deleted: boolean;
   deleted_at?: string | null;
+  position?: number;
 }
 
 export interface HabitLog {

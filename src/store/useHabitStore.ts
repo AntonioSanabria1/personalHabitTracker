@@ -32,15 +32,36 @@ export const useHabitStore = create<HabitStore>((set, get) => ({
     
     try {
       const [habitsResponse, logsResponse] = await Promise.all([
-        supabase.from('habits').select('*').order('created_at', { ascending: true }),
+        supabase.from('habits').select('*').order('position', { ascending: true }).order('created_at', { ascending: true }),
         supabase.from('habit_logs').select('*')
       ]);
 
       if (habitsResponse.error) throw habitsResponse.error;
       if (logsResponse.error) throw logsResponse.error;
 
+      let fetchedHabits = habitsResponse.data || [];
+
+      // Create default habits for new users
+      if (fetchedHabits.length === 0) {
+        const defaultHabits = [
+          { user_id: userId, name: 'Lectura', category: 'Desarrollo Personal', color: 'Purple' },
+          { user_id: userId, name: 'Meditación', category: 'Salud', color: 'Teal' },
+          { user_id: userId, name: 'Entrenamiento', category: 'Deporte', color: 'Emerald' },
+          { user_id: userId, name: 'Beber agua (2L)', category: 'Salud', color: 'Cyan' }
+        ];
+        
+        const { data: newHabits, error: insertError } = await supabase
+          .from('habits')
+          .insert(defaultHabits)
+          .select();
+          
+        if (!insertError && newHabits) {
+          fetchedHabits = newHabits;
+        }
+      }
+
       set({ 
-        habits: habitsResponse.data || [], 
+        habits: fetchedHabits, 
         logs: logsResponse.data || [],
         isLoading: false
       });
@@ -63,6 +84,7 @@ export const useHabitStore = create<HabitStore>((set, get) => ({
       name,
       category,
       color,
+      position: habits.length,
     };
 
     const { data, error } = await supabase.from('habits').insert(newHabit).select().single();
@@ -151,18 +173,29 @@ export const useHabitStore = create<HabitStore>((set, get) => ({
     }));
   },
 
-  reorderHabits: (activeId, overId) => set((state) => {
-    const oldIndex = state.habits.findIndex(h => h.id === activeId);
-    const newIndex = state.habits.findIndex(h => h.id === overId);
-    
-    if (oldIndex !== -1 && newIndex !== -1) {
-      const newHabits = [...state.habits];
-      const [movedHabit] = newHabits.splice(oldIndex, 1);
-      newHabits.splice(newIndex, 0, movedHabit);
-      return { habits: newHabits };
-    }
-    return state;
-  }),
+  reorderHabits: (activeId, overId) => {
+    set((state) => {
+      const oldIndex = state.habits.findIndex(h => h.id === activeId);
+      const newIndex = state.habits.findIndex(h => h.id === overId);
+      
+      if (oldIndex !== -1 && newIndex !== -1) {
+        const newHabits = [...state.habits];
+        const [movedHabit] = newHabits.splice(oldIndex, 1);
+        newHabits.splice(newIndex, 0, movedHabit);
+        
+        // Update positions
+        const updatedHabits = newHabits.map((h, index) => ({ ...h, position: index }));
+        
+        // Fire and forget backend updates
+        Promise.all(
+          updatedHabits.map(h => supabase.from('habits').update({ position: h.position }).eq('id', h.id))
+        ).catch(err => console.error('Error syncing order to DB:', err));
+        
+        return { habits: updatedHabits };
+      }
+      return state;
+    });
+  },
 
   toggleHabitLog: async (habitId, date) => {
     const { logs } = get();
