@@ -11,6 +11,8 @@ export const metadata: Metadata = {
   description: 'Track your habits with a premium aesthetic.',
 };
 
+import { AuthProvider } from '@/components/AuthProvider';
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -20,12 +22,14 @@ export default function RootLayout({
     <html lang="es" className="dark">
       <body className={`${inter.className} antialiased bg-zinc-950 text-zinc-50 overflow-hidden selection:bg-zinc-800`}>
         <StoreInitializer>
-          <div className="flex h-[100dvh] w-full">
-            <Navigation />
-            <main className="flex-1 overflow-y-auto pb-28 md:pb-0">
-              {children}
-            </main>
-          </div>
+          <AuthProvider>
+            <div className="flex h-[100dvh] w-full">
+              <Navigation />
+              <main className="flex-1 overflow-y-auto pb-28 md:pb-0">
+                {children}
+              </main>
+            </div>
+          </AuthProvider>
         </StoreInitializer>
       </body>
     </html>

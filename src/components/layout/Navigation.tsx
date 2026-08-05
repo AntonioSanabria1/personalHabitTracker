@@ -1,12 +1,19 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { Home, BarChart2, Trash2, Settings } from 'lucide-react';
+import { usePathname, useRouter } from 'next/navigation';
+import { Home, BarChart2, Trash2, Settings, LogOut } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { supabase } from '@/lib/supabase';
+import { useHabitStore } from '@/store/useHabitStore';
 
 export function Navigation() {
   const pathname = usePathname();
+  const router = useRouter();
+  const resetStore = useHabitStore(state => state.resetStore);
+
+  // No renderizar navegación en la página de login
+  if (pathname === '/login') return null;
 
   const navItems = [
     { name: 'Hoy', href: '/', icon: Home },
@@ -14,6 +21,12 @@ export function Navigation() {
     { name: 'Gestionar', href: '/manage', icon: Settings },
     { name: 'Papelera', href: '/trash', icon: Trash2 },
   ];
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    resetStore();
+    router.push('/login');
+  };
 
   return (
     <>
@@ -35,6 +48,13 @@ export function Navigation() {
             </Link>
           );
         })}
+        <button
+          onClick={handleLogout}
+          className="flex flex-col items-center gap-1 rounded-xl p-2 text-[10px] font-medium transition-colors uppercase tracking-wider text-zinc-500 active:text-rose-400"
+        >
+          <LogOut className="h-5 w-5 mb-1" strokeWidth={1.5} />
+          <span>Salir</span>
+        </button>
       </div>
 
       {/* Desktop Sidebar */}
@@ -69,6 +89,16 @@ export function Navigation() {
             );
           })}
         </nav>
+        
+        <div className="mt-auto">
+          <button
+            onClick={handleLogout}
+            className="w-full group flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all text-zinc-400 hover:text-rose-400 hover:bg-rose-500/10"
+          >
+            <LogOut className="h-4 w-4 transition-colors text-zinc-500 group-hover:text-rose-400" strokeWidth={1.5} />
+            Cerrar Sesión
+          </button>
+        </div>
       </div>
     </>
   );
