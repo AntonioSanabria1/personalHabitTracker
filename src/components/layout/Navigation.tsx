@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { Home, BarChart2, Trash2, Settings, LogOut } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { supabase } from '@/lib/supabase';
@@ -11,6 +12,7 @@ export function Navigation() {
   const pathname = usePathname();
   const router = useRouter();
   const resetStore = useHabitStore(state => state.resetStore);
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
   // No renderizar navegación en la página de login
   if (pathname === '/login') return null;
@@ -23,9 +25,6 @@ export function Navigation() {
   ];
 
   const handleLogout = async () => {
-    const isConfirmed = window.confirm('¿Estás seguro de que quieres cerrar sesión?');
-    if (!isConfirmed) return;
-    
     await supabase.auth.signOut();
     resetStore();
     router.push('/login');
@@ -52,7 +51,7 @@ export function Navigation() {
           );
         })}
         <button
-          onClick={handleLogout}
+          onClick={() => setShowLogoutConfirm(true)}
           className="flex flex-col items-center gap-1 rounded-xl p-2 text-[10px] font-medium transition-colors uppercase tracking-wider text-zinc-500 active:text-rose-400"
         >
           <LogOut className="h-5 w-5 mb-1" strokeWidth={1.5} />
@@ -95,7 +94,7 @@ export function Navigation() {
         
         <div className="mt-auto">
           <button
-            onClick={handleLogout}
+            onClick={() => setShowLogoutConfirm(true)}
             className="w-full group flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all text-zinc-400 hover:text-rose-400 hover:bg-rose-500/10"
           >
             <LogOut className="h-4 w-4 transition-colors text-zinc-500 group-hover:text-rose-400" strokeWidth={1.5} />
@@ -103,6 +102,28 @@ export function Navigation() {
           </button>
         </div>
       </div>
+      {showLogoutConfirm && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+          <div className="w-full max-w-sm rounded-2xl border border-zinc-800 bg-zinc-950 p-6 shadow-2xl animate-in fade-in zoom-in-95 duration-200">
+            <h3 className="mb-2 text-lg font-bold text-zinc-100">Cerrar Sesión</h3>
+            <p className="mb-6 text-sm text-zinc-400">¿Estás seguro de que quieres salir de tu cuenta?</p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowLogoutConfirm(false)}
+                className="flex-1 rounded-xl bg-zinc-900 px-4 py-2.5 text-sm font-medium text-zinc-300 hover:bg-zinc-800 transition-colors"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={handleLogout}
+                className="flex-1 rounded-xl bg-rose-500/10 px-4 py-2.5 text-sm font-medium text-rose-500 hover:bg-rose-500 hover:text-white transition-colors"
+              >
+                Salir
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
