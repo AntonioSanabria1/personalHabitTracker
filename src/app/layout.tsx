@@ -9,6 +9,10 @@ const inter = Inter({ subsets: ['latin'] });
 export const metadata: Metadata = {
   title: 'Habit Tracker',
   description: 'Track your habits with a premium aesthetic.',
+  icons: {
+    icon: '/logo.png',
+    apple: '/logo.png',
+  }
 };
 
 import { AuthProvider } from '@/components/AuthProvider';

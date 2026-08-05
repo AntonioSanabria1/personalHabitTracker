@@ -47,9 +47,7 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center p-6 bg-zinc-950">
       <div className="w-full max-w-md elevated-card p-8 animate-in fade-in slide-in-from-bottom-8 duration-700">
         <div className="mb-10 text-center">
-          <div className="w-12 h-12 bg-zinc-100 rounded-full mx-auto mb-6 flex items-center justify-center shadow-[0_0_30px_rgba(255,255,255,0.2)]">
-            <div className="w-4 h-4 bg-zinc-950 rounded-full" />
-          </div>
+          <img src="/logo.png" alt="Habit Tracker Logo" className="w-24 h-24 mx-auto mb-6 drop-shadow-2xl" />
           <h1 className="text-2xl font-bold text-zinc-100 mb-2">
             {isLogin ? 'Bienvenido de nuevo' : 'Crea tu cuenta'}
           </h1>

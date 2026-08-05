@@ -60,9 +60,9 @@ export function Navigation() {
       {/* Desktop Sidebar */}
       <div className="hidden h-screen w-64 flex-col border-r border-zinc-800 bg-zinc-950/50 p-6 md:flex">
         <div className="mb-12 mt-4 px-2">
-          <h1 className="text-xl font-semibold tracking-tighter text-zinc-100 flex items-center gap-2">
-            <div className="h-4 w-4 rounded-full bg-zinc-100 shadow-[0_0_10px_rgba(255,255,255,0.3)]" />
-            Tracker
+          <h1 className="text-xl font-semibold tracking-tighter text-zinc-100 flex items-center gap-3">
+            <img src="/logo.png" alt="Logo" className="h-6 w-6 drop-shadow-md" />
+            Habit Tracker
           </h1>
         </div>
 
