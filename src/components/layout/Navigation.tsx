@@ -11,11 +11,9 @@ import { useHabitStore } from '@/store/useHabitStore';
 export function Navigation() {
   const pathname = usePathname();
   const router = useRouter();
-  const { resetStore, userEmail, userAvatar } = useHabitStore(state => ({
-    resetStore: state.resetStore,
-    userEmail: state.userEmail,
-    userAvatar: state.userAvatar
-  }));
+  const resetStore = useHabitStore(state => state.resetStore);
+  const userEmail = useHabitStore(state => state.userEmail);
+  const userAvatar = useHabitStore(state => state.userAvatar);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
   // No renderizar navegación en la página de login
@@ -103,7 +101,7 @@ export function Navigation() {
                 <img src={userAvatar} alt="Avatar" className="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-700" />
               ) : (
                 <div className="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-500 flex items-center justify-center font-bold text-sm border border-emerald-500/20">
-                  {userEmail.charAt(0).toUpperCase()}
+                  {userEmail ? userEmail.charAt(0).toUpperCase() : 'U'}
                 </div>
               )}
               <div className="flex flex-col overflow-hidden">
