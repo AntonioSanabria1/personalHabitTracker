@@ -99,39 +99,17 @@ export function Navigation() {
         <div className="mt-auto relative p-3">
           {/* Menu Popover */}
           {showUserMenu && (
-            <div className="absolute bottom-full left-3 right-3 mb-2 rounded-2xl bg-[#202123] border border-zinc-800 shadow-2xl overflow-hidden animate-in slide-in-from-bottom-2 fade-in duration-200 z-50">
-              <div className="p-3 border-b border-zinc-800/80 hover:bg-zinc-800/50 cursor-pointer transition-colors">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3 truncate">
-                    {userAvatar ? (
-                      <img src={userAvatar} alt="Avatar" className="w-8 h-8 rounded-full bg-zinc-800 object-cover flex-shrink-0" />
-                    ) : (
-                      <div className="w-8 h-8 rounded-full bg-zinc-600 text-zinc-200 flex items-center justify-center font-bold text-xs flex-shrink-0">
-                        {userEmail ? userEmail.charAt(0).toUpperCase() : 'U'}
-                      </div>
-                    )}
-                    <div className="flex flex-col truncate">
-                      <span className="text-sm font-medium text-zinc-200 truncate">{userName || (userEmail ? userEmail.split('@')[0] : 'Usuario')}</span>
-                      <span className="text-[11px] text-zinc-500">Gratis</span>
-                    </div>
-                  </div>
-                  <div className="text-zinc-500">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                  </div>
-                </div>
-              </div>
-              <div className="p-1.5">
-                <button
-                  onClick={() => {
-                    setShowUserMenu(false);
-                    setShowLogoutConfirm(true);
-                  }}
-                  className="w-full flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-zinc-300 hover:bg-zinc-800 transition-colors text-left"
-                >
-                  <LogOut className="h-4 w-4 text-zinc-400" />
-                  Cerrar sesión
-                </button>
-              </div>
+            <div className="absolute bottom-full left-3 right-3 mb-2 rounded-2xl bg-[#202123] border border-zinc-800 shadow-2xl overflow-hidden animate-in slide-in-from-bottom-2 fade-in duration-200 z-50 p-1.5">
+              <button
+                onClick={() => {
+                  setShowUserMenu(false);
+                  setShowLogoutConfirm(true);
+                }}
+                className="w-full flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-zinc-300 hover:text-rose-400 hover:bg-zinc-800 transition-colors text-left group"
+              >
+                <LogOut className="h-4 w-4 text-zinc-500 group-hover:text-rose-400" />
+                Cerrar sesión
+              </button>
             </div>
           )}
 
@@ -152,8 +130,9 @@ export function Navigation() {
                 </div>
               )}
               <div className="flex flex-col items-start truncate">
-                <span className="text-sm font-semibold text-zinc-200 truncate w-full text-left">{userName || (userEmail ? userEmail.split('@')[0] : 'Usuario')}</span>
-                <span className="text-[11px] text-zinc-500 font-medium">Gratis</span>
+                <span className="text-sm font-semibold text-zinc-200 truncate w-full text-left">
+                  {userName || (userEmail ? userEmail.split('@')[0] : 'Usuario')}
+                </span>
               </div>
             </div>
           </button>
