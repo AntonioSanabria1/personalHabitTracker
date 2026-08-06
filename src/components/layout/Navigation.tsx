@@ -94,28 +94,25 @@ export function Navigation() {
           })}
         </nav>
         
-        <div className="mt-auto px-2 mb-2">
+        <div className="mt-auto px-2 mb-4 flex justify-center">
           <button
             onClick={() => setShowLogoutConfirm(true)}
-            className="w-full group relative flex items-center gap-3 rounded-2xl p-2 pr-3 transition-all duration-300 hover:bg-zinc-800/60 hover:shadow-md"
+            title="Cerrar Sesión"
+            className="group relative flex items-center justify-center rounded-full transition-all duration-300 hover:ring-4 hover:ring-zinc-800/50 hover:scale-105 active:scale-95"
           >
             {userEmail ? (
               userAvatar ? (
-                <img src={userAvatar} alt="Avatar" className="w-9 h-9 rounded-full bg-zinc-800 object-cover ring-2 ring-zinc-900 group-hover:ring-zinc-700 transition-all duration-300 shadow-sm" />
+                <img src={userAvatar} alt="Avatar" className="w-10 h-10 rounded-full bg-zinc-800 object-cover ring-2 ring-zinc-900 group-hover:ring-zinc-700 transition-all duration-300 shadow-sm" />
               ) : (
-                <div className="w-9 h-9 rounded-full bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 text-white flex items-center justify-center font-bold text-sm ring-2 ring-zinc-900 group-hover:ring-zinc-700 transition-all duration-300 shadow-sm">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 text-white flex items-center justify-center font-bold text-sm ring-2 ring-zinc-900 group-hover:ring-zinc-700 transition-all duration-300 shadow-sm">
                   {userEmail.charAt(0).toUpperCase()}
                 </div>
               )
             ) : (
-              <div className="w-9 h-9 rounded-full bg-zinc-800/80 flex items-center justify-center ring-2 ring-zinc-900">
+              <div className="w-10 h-10 rounded-full bg-zinc-800/80 flex items-center justify-center ring-2 ring-zinc-900">
                 <LogOut className="h-4 w-4 text-zinc-400" />
               </div>
             )}
-            <span className="text-sm font-semibold text-zinc-300 group-hover:text-zinc-100 transition-colors duration-300">
-              Cerrar Sesión
-            </span>
-            <LogOut className="h-4 w-4 text-zinc-500 ml-auto group-hover:text-rose-400 transition-all duration-300 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0" strokeWidth={2} />
           </button>
         </div>
       </div>
