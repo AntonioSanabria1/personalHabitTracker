@@ -97,21 +97,20 @@ export function Navigation() {
         <div className="mt-auto">
           <button
             onClick={() => setShowLogoutConfirm(true)}
-            className="w-full group flex items-center justify-between rounded-xl px-4 py-3 text-sm font-medium transition-all text-zinc-400 hover:text-rose-400 hover:bg-rose-500/10"
+            className="w-full group flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all text-zinc-400 hover:text-rose-400 hover:bg-rose-500/10"
           >
-            <div className="flex items-center gap-3">
-              <LogOut className="h-4 w-4 transition-colors text-zinc-500 group-hover:text-rose-400" strokeWidth={1.5} />
-              Cerrar Sesión
-            </div>
-            {userEmail && (
+            {userEmail ? (
               userAvatar ? (
-                <img src={userAvatar} alt="Avatar" className="w-6 h-6 rounded-full bg-zinc-800 border border-zinc-700 opacity-80 group-hover:opacity-40 transition-opacity" />
+                <img src={userAvatar} alt="Avatar" className="w-5 h-5 rounded-full bg-zinc-800 border border-zinc-700 transition-transform group-hover:scale-110" />
               ) : (
-                <div className="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-500 flex items-center justify-center font-bold text-[10px] border border-emerald-500/20 opacity-80 group-hover:opacity-40 transition-opacity">
-                  {userEmail ? userEmail.charAt(0).toUpperCase() : 'U'}
+                <div className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-500 flex items-center justify-center font-bold text-[9px] border border-emerald-500/20 transition-transform group-hover:scale-110">
+                  {userEmail.charAt(0).toUpperCase()}
                 </div>
               )
+            ) : (
+              <LogOut className="h-5 w-5 transition-colors text-zinc-500 group-hover:text-rose-400" strokeWidth={1.5} />
             )}
+            Cerrar Sesión
           </button>
         </div>
       </div>
