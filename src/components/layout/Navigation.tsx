@@ -12,6 +12,7 @@ export function Navigation() {
   const pathname = usePathname();
   const router = useRouter();
   const resetStore = useHabitStore(state => state.resetStore);
+  const userName = useHabitStore(state => state.userName);
   const userEmail = useHabitStore(state => state.userEmail);
   const userAvatar = useHabitStore(state => state.userAvatar);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
@@ -110,7 +111,7 @@ export function Navigation() {
                       </div>
                     )}
                     <div className="flex flex-col truncate">
-                      <span className="text-sm font-medium text-zinc-200 truncate">{userEmail ? userEmail.split('@')[0] : 'Usuario'}</span>
+                      <span className="text-sm font-medium text-zinc-200 truncate">{userName || (userEmail ? userEmail.split('@')[0] : 'Usuario')}</span>
                       <span className="text-[11px] text-zinc-500">Gratis</span>
                     </div>
                   </div>
@@ -120,13 +121,6 @@ export function Navigation() {
                 </div>
               </div>
               <div className="p-1.5">
-                <button
-                  className="w-full flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-zinc-300 hover:bg-zinc-800 transition-colors text-left"
-                >
-                  <Settings className="h-4 w-4 text-zinc-400" />
-                  Configuración
-                </button>
-                <div className="h-px bg-zinc-800/80 my-1.5 mx-2" />
                 <button
                   onClick={() => {
                     setShowUserMenu(false);
@@ -158,7 +152,7 @@ export function Navigation() {
                 </div>
               )}
               <div className="flex flex-col items-start truncate">
-                <span className="text-sm font-semibold text-zinc-200 truncate w-full text-left">{userEmail ? userEmail.split('@')[0] : 'Usuario'}</span>
+                <span className="text-sm font-semibold text-zinc-200 truncate w-full text-left">{userName || (userEmail ? userEmail.split('@')[0] : 'Usuario')}</span>
                 <span className="text-[11px] text-zinc-500 font-medium">Gratis</span>
               </div>
             </div>

@@ -6,6 +6,7 @@ interface HabitStore {
   habits: Habit[];
   logs: HabitLog[];
   userId: string | null;
+  userName: string | null;
   userEmail: string | null;
   userAvatar: string | null;
   isLoading: boolean;
@@ -29,6 +30,7 @@ export const useHabitStore = create<HabitStore>((set, get) => ({
   habits: [],
   logs: [],
   userId: null,
+  userName: null,
   userEmail: null,
   userAvatar: null,
   isLoading: true,
@@ -39,9 +41,10 @@ export const useHabitStore = create<HabitStore>((set, get) => ({
     initPromise = (async () => {
       const { data: { user } } = await supabase.auth.getUser();
       const userEmail = user?.email || null;
+      const userName = user?.user_metadata?.full_name || user?.user_metadata?.name || null;
       const userAvatar = user?.user_metadata?.avatar_url || null;
       
-      set({ userId, userEmail, userAvatar, isLoading: true });
+      set({ userId, userName, userEmail, userAvatar, isLoading: true });
     
     try {
       const [habitsResponse, logsResponse] = await Promise.all([
@@ -89,7 +92,7 @@ export const useHabitStore = create<HabitStore>((set, get) => ({
   },
 
   resetStore: () => {
-    set({ habits: [], logs: [], userId: null, userEmail: null, userAvatar: null, isLoading: true });
+    set({ habits: [], logs: [], userId: null, userName: null, userEmail: null, userAvatar: null, isLoading: true });
   },
 
   addHabit: async (name, category, color) => {
