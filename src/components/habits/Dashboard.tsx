@@ -7,6 +7,7 @@ import { format, subDays, subMonths, startOfMonth, endOfMonth } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { cn, getHabitTextColorClasses } from '@/lib/utils';
 import { useSearchParams } from 'next/navigation';
+import { HabitMonthGrid } from './HabitMonthGrid';
 
 type TimeRange = 'week' | 'month' | 'year';
 
@@ -34,7 +35,7 @@ function DashboardContent({ serverDate }: { serverDate?: string }) {
     if (timeRange === 'week') {
       data = Array.from({ length: 7 }).map((_, i) => {
         const date = subDays(baseDate, 6 - i);
-        const dateStr = date.toISOString().split('T')[0];
+        const dateStr = format(date, 'yyyy-MM-dd');
         
         const relevantHabits = selectedHabitId ? activeHabits.filter(h => h.id === selectedHabitId) : activeHabits;
         const totalCount = relevantHabits.length || 1;
@@ -48,7 +49,7 @@ function DashboardContent({ serverDate }: { serverDate?: string }) {
     } else if (timeRange === 'month') {
       data = Array.from({ length: 30 }).map((_, i) => {
         const date = subDays(baseDate, 29 - i);
-        const dateStr = date.toISOString().split('T')[0];
+        const dateStr = format(date, 'yyyy-MM-dd');
         
         const relevantHabits = selectedHabitId ? activeHabits.filter(h => h.id === selectedHabitId) : activeHabits;
         const totalCount = relevantHabits.length || 1;
@@ -62,8 +63,8 @@ function DashboardContent({ serverDate }: { serverDate?: string }) {
     } else if (timeRange === 'year') {
       data = Array.from({ length: 12 }).map((_, i) => {
         const date = subMonths(baseDate, 11 - i);
-        const monthStart = startOfMonth(date).toISOString().split('T')[0];
-        const monthEnd = endOfMonth(date).toISOString().split('T')[0];
+        const monthStart = format(startOfMonth(date), 'yyyy-MM-dd');
+        const monthEnd = format(endOfMonth(date), 'yyyy-MM-dd');
         
         const relevantHabits = selectedHabitId ? activeHabits.filter(h => h.id === selectedHabitId) : activeHabits;
         
@@ -236,6 +237,10 @@ function DashboardContent({ serverDate }: { serverDate?: string }) {
           </div>
         </div>
       </div>
+
+      {selectedHabitId && (
+        <HabitMonthGrid habitId={selectedHabitId} />
+      )}
     </div>
   );
 }

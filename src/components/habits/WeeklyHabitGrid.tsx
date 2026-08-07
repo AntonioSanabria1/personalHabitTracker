@@ -18,7 +18,7 @@ export function WeeklyHabitGrid({ serverDate }: { serverDate?: string }) {
     const date = subDays(baseDate, 6 - i);
     return {
       dateObj: date,
-      dateStr: date.toISOString().split('T')[0],
+      dateStr: format(date, 'yyyy-MM-dd'),
       dayName: format(date, 'E', { locale: es }).substring(0, 1).toUpperCase(),
       dayNumber: format(date, 'd'),
       isToday: i === 6

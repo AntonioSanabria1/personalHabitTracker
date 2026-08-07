@@ -11,7 +11,7 @@ export function TodayProgress({ serverDate }: { serverDate?: string }) {
   const activeHabits = habits.filter(h => !h.is_deleted);
   
   const baseDate = serverDate ? new Date(serverDate) : new Date();
-  const today = baseDate.toISOString().split('T')[0];
+  const today = format(baseDate, 'yyyy-MM-dd');
   const activeHabitIds = new Set(activeHabits.map(h => h.id));
   const todayLogs = logs.filter(l => l.date === today && l.completed && activeHabitIds.has(l.habit_id));
   
